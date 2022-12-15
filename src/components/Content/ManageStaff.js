@@ -1,48 +1,37 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useState } from "react";
+import StaffList from "./StaffList";
+import StaffForm from "./StaffForm";
 
 const ManageStaff = () => {
-  const [staffList, updateStaffList] = useState([]);
+  const [contentBody, updateContentBody] = useState("Home");
 
-  useEffect(() => {
-    retrieveStaffList();
-  }, []);
-
-  const retrieveStaffList = () => {
-    axios
-      .get("http://localhost:8080/api/staff")
-      .then((resp) => {
-        updateStaffList(resp.data);
-      })
-      .catch((e) => console.log(e));
+  const displayContentBody = (content) => {
+    if (content === "Home") {
+      return <StaffList />;
+    }
+    if (content === "Add") {
+      return <StaffForm updateContentBody={updateContentBody}/>;
+    }
+    if (content === "Search") {
+      return <div>Search staff</div>;
+    }
   };
-
-  const capitalizeName = (name) => {
-    return name.charAt(0).toUpperCase() + name.slice(1);
-  }
-
-  const displayStaffList = staffList.map((staff) => (
-    <tr key={staff.stfId}>
-      <td>{staff.stfId}</td>
-      <td>{capitalizeName(staff.firstname)} {capitalizeName(staff.lastname)}</td>
-      <td>View Edit Delete</td>
-    </tr>
-  ));
 
   return (
     <div>
       <div>Manage Staff</div>
-      <div>Add Search</div>
-      <table className="table">
-        <thead>
-          <tr>
-            <th>Staff ID</th>
-            <th>Name</th>
-            <th>Function</th>
-          </tr>
-        </thead>
-        <tbody>{displayStaffList}</tbody>
-      </table>
+      <div>
+        <button onClick={(e) => updateContentBody(e.target.innerHTML)}>
+          Home
+        </button>
+        <button onClick={(e) => updateContentBody(e.target.innerHTML)}>
+          Add
+        </button>
+        <button onClick={(e) => updateContentBody(e.target.innerHTML)}>
+          Search
+        </button>
+      </div>
+      {displayContentBody(contentBody)}
     </div>
   );
 };
