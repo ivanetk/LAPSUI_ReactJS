@@ -14,7 +14,7 @@ function App() {
   return (
     <div className="container">
       <header>
-        <div>Admin UI test fetch</div>
+        <div>Admin UI</div>
       </header>
       <div className="row">
         <div className="col navbar navbar-expand-lg navbar-light bg-light">
