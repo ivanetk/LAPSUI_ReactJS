@@ -4,13 +4,19 @@ import Content from "./components/Content/Content";
 import { useState } from "react";
 
 function App() {
-  const [menuItem, setMenuItem] = useState('');
+  const [menuItem, setMenuItem] = useState("");
 
-  const sidebarItems = ["Manage Staff", "Manage Leave Types"]
+  const api_url = `http://localhost:8080/api`
+
+  const sidebarItems = [
+    "Manage Staff",
+    "Manage Leave Types",
+    "Manage Holidays",
+  ];
 
   const sidebarHandler = (menuItem) => {
     setMenuItem(menuItem);
-  }
+  };
   return (
     <div className="container">
       <header>
@@ -18,10 +24,10 @@ function App() {
       </header>
       <div className="row">
         <div className="col navbar navbar-expand-lg navbar-light bg-light">
-          <Sidebar sidebarHandler={sidebarHandler} items={sidebarItems}/>
+          <Sidebar sidebarHandler={sidebarHandler} items={sidebarItems} />
         </div>
         <div className="col-8">
-          <Content menuItem={menuItem}/>
+          <Content menuItem={menuItem} api_url={api_url} />
         </div>
       </div>
     </div>

@@ -1,18 +1,12 @@
-import axios from "axios";
 import { useState } from "react";
+import axios from "axios";
 
 const StaffForm = (props) => {
-  const [staff, setStaff] = useState({
-    firstname: "",
-    lastname: "",
-    roleid: "",
-    title: "",
-  });
+  const [staff, setStaff] = useState({});
 
   const submitHandler = (e) => {
     e.preventDefault();
-    console.log(staff);
-    axios.post("http://localhost:8080/api/staff", staff);
+    axios.post(`${props.api_url}/staff`, staff);
     props.updateContentBody("Home");
   };
 
@@ -30,7 +24,7 @@ const StaffForm = (props) => {
           type="text"
           id="firstname"
           name="firstname"
-          value={staff.firstname}
+          value={staff.firstname || ""}
           onChange={inputHandler}
           required
         />
@@ -41,18 +35,18 @@ const StaffForm = (props) => {
           type="text"
           id="lastname"
           name="lastname"
-          value={staff.lastname}
+          value={staff.lastname || ""}
           onChange={inputHandler}
           required
         />
       </label>
-      <label htmlFor="roleid">
+      <label htmlFor="roleId">
         Role ID:
         <input
           type="number"
-          id="roleid"
-          name="roleid"
-          value={staff.roleid}
+          id="roleId"
+          name="roleId"
+          value={staff.roleId || ""}
           onChange={inputHandler}
           required
         />
@@ -63,7 +57,7 @@ const StaffForm = (props) => {
           type="text"
           id="title"
           name="title"
-          value={staff.title}
+          value={staff.title || ""}
           onChange={inputHandler}
           required
         />
