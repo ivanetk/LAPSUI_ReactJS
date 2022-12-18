@@ -3,6 +3,7 @@ import axios from "axios";
 
 const EditStaff = (props) => {
   const [staffDetails, updateStaffDetails] = useState({});
+  const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
     retrieveStaffDetails(props.staffId);
@@ -19,8 +20,13 @@ const EditStaff = (props) => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    axios.put(`${props.api_url}/staff`, staffDetails);
-    props.updateContentBody("View");
+    setLoading(true);
+    axios
+      .put(`${props.api_url}/staff`, staffDetails)
+      .then(() => setLoading(false));
+    if (!isLoading) {
+      props.updateContentBody("View");
+    }
   };
 
   const inputHandler = (e) => {
@@ -58,16 +64,32 @@ const EditStaff = (props) => {
           </label>
         </div>
         <div>
-          <label htmlFor="roleid">
-            Role ID:
+          <label htmlFor="email">
+            Email:
             <input
-              type="number"
-              id="roleid"
-              name="roleid"
-              value={staffDetails.roleId || ""}
+              type="email"
+              id="email"
+              name="email"
+              value={staffDetails.email || ""}
               onChange={inputHandler}
               required
             />
+          </label>
+        </div>
+        <div>
+          <label htmlFor="roleId">
+            Role:
+            <select
+              id="roleId"
+              name="roleId"
+              value={staffDetails.roleId}
+              onChange={inputHandler}
+              required
+            >
+              <option value="1">Admin</option>
+              <option value="2">Manager</option>
+              <option value="3">Employee</option>
+            </select>
           </label>
         </div>
         <div>
@@ -120,6 +142,21 @@ const EditStaff = (props) => {
               onChange={inputHandler}
               required
             />
+          </label>
+        </div>
+        <div>
+          <label htmlFor="status">
+            Status:
+            <select
+              id="staus"
+              name="status"
+              value={staffDetails.status}
+              onChange={inputHandler}
+              required
+            >
+              <option value="true">Active</option>
+              <option value="false">Inactive</option>
+            </select>
           </label>
         </div>
 

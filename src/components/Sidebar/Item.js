@@ -1,10 +1,11 @@
 const Item = (props) => {
   return (
-    <div>
-      <button onClick={(e) => props.sidebarHandler(props.name)}>
+      <button
+        className="btn btn-outline-primary text-start"
+        onClick={(e) => props.sidebarHandler(props.name)}
+      >
         {props.name}
       </button>
-    </div>
   );
 };
 

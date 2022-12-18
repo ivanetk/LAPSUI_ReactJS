@@ -1,8 +1,8 @@
 import { useState } from "react";
 import StaffList from "./StaffList";
-import StaffForm from "./StaffForm";
+import StaffForm from "./AddStaffForm";
 import StaffDetails from "./StaffDetails";
-import EditStaff from "./EditStaff";
+import EditStaff from "./EditStaffForm";
 
 const ManageStaff = (props) => {
   const [contentBody, updateContentBody] = useState("Home");
@@ -18,7 +18,6 @@ const ManageStaff = (props) => {
       return (
         <StaffList
           api_url={props.api_url}
-          updateStaffId={updateStaffId}
           updateContentBody={updateContentBody}
           viewAndEditClickHandler={viewAndEditClickHandler}
         />
@@ -59,13 +58,22 @@ const ManageStaff = (props) => {
     <div>
       <div>Manage Staff</div>
       <div>
-        <button onClick={(e) => updateContentBody(e.target.innerHTML)}>
+        <button
+          className="btn btn-secondary btn-sm"
+          onClick={(e) => updateContentBody(e.target.innerHTML)}
+        >
           Home
         </button>
-        <button onClick={(e) => updateContentBody(e.target.innerHTML)}>
+        <button
+          className="btn btn-secondary btn-sm mx-2"
+          onClick={(e) => updateContentBody(e.target.innerHTML)}
+        >
           Add
         </button>
-        <button onClick={(e) => updateContentBody(e.target.innerHTML)}>
+        <button
+          className="btn btn-secondary btn-sm"
+          onClick={(e) => updateContentBody(e.target.innerHTML)}
+        >
           Search
         </button>
       </div>

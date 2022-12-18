@@ -3,25 +3,19 @@ import { useEffect, useState } from "react";
 
 const StaffList = (props) => {
   const [staffList, updateStaffList] = useState([]);
+  const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
     retrieveStaffList();
-  }, [staffList]);
+  }, []);
 
   const retrieveStaffList = () => {
-    axios
-      .get(`${props.api_url}/staff`)
-      .then((resp) => {
-        updateStaffList(resp.data);
-      })
-      .catch((e) => console.log(e));
-  };
-
-  const deleteStaff = (staff) => {
-    axios
-      .delete(`${props.api_url}/staff`, { data: staff })
-      .catch((e) => console.log(e));
-    retrieveStaffList();
+    setLoading(true);
+    axios.get(`${props.api_url}/staff`).then((resp) => {
+      updateStaffList(resp.data);
+      setLoading(false);
+    });
+   
   };
 
   const capitalizeName = (name) => {
@@ -39,6 +33,7 @@ const StaffList = (props) => {
           onClick={(e) => {
             props.viewAndEditClickHandler(staff.stfId, e);
           }}
+          className="btn btn-secondary btn-sm"
         >
           View
         </button>
@@ -46,19 +41,16 @@ const StaffList = (props) => {
           onClick={(e) => {
             props.viewAndEditClickHandler(staff.stfId, e);
           }}
+          className="btn btn-secondary btn-sm ms-2"
         >
           Edit
-        </button>
-        <button
-          onClick={(e) => {
-            deleteStaff(staff);
-          }}
-        >
-          Delete
         </button>
       </td>
     </tr>
   ));
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
   return (
     <table className="table">
       <thead>

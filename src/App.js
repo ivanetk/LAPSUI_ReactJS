@@ -6,7 +6,7 @@ import { useState } from "react";
 function App() {
   const [menuItem, setMenuItem] = useState("");
 
-  const api_url = `http://localhost:8080/api`
+  const api_url = `http://localhost:8080/api`;
 
   const sidebarItems = [
     "Manage Staff",
@@ -20,13 +20,13 @@ function App() {
   return (
     <div className="container">
       <header>
-        <div>Admin UI</div>
+        <div className="fs-4">Admin UI</div>
       </header>
       <div className="row">
-        <div className="col navbar navbar-expand-lg navbar-light bg-light">
+        <div className="col navbar">
           <Sidebar sidebarHandler={sidebarHandler} items={sidebarItems} />
         </div>
-        <div className="col-8">
+        <div className="col-10">
           <Content menuItem={menuItem} api_url={api_url} />
         </div>
       </div>

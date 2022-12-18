@@ -1,5 +1,5 @@
 import ManageHolidays from "./ManageHolidays";
-import ManageLeaveTypes from "./ManageLeaveTypes";
+import ManageLeaveTypes from "./ManageLeaveTypes/ManageLeaveTypes";
 import ManageStaff from "./ManageStaff/ManageStaff";
 
 const Content = (props) => {

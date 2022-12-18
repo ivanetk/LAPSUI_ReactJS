@@ -3,16 +3,19 @@ import axios from "axios";
 
 const StaffDetails = (props) => {
   const [staffDetails, updateStaffDetails] = useState(null);
+  const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
     retrieveStaffDetails(props.staffId);
   }, [props.staffId]);
 
   const retrieveStaffDetails = (id) => {
+    setLoading(true);
     axios
       .get(`${props.api_url}/staff/${id}`)
       .then((resp) => {
         updateStaffDetails(resp.data);
+        setLoading(false);
       })
       .catch((e) => console.log(e));
   };
@@ -21,6 +24,19 @@ const StaffDetails = (props) => {
     return name.charAt(0).toUpperCase() + name.slice(1);
   };
 
+  const displayRole = (roleid) => {
+    switch(roleid) {
+      case 1:
+        return "Admin";
+      case 2:
+        return "Manager";
+      case 3:
+        return "Employee";
+      default:
+        return "No role assigned";
+    }
+  }
+
   const displayStatus = (status) => {
     if (status) {
       return "Active";
@@ -28,7 +44,9 @@ const StaffDetails = (props) => {
       return "Inactive";
     }
   };
-
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
   if (staffDetails) {
     return (
       <div>
@@ -37,7 +55,7 @@ const StaffDetails = (props) => {
         <div>Last Name: {capitalizeName(staffDetails.lastname)}</div>
         <div>Username: {staffDetails.username}</div>
         <div>Email: {staffDetails.email}</div>
-        <div>Role ID: {staffDetails.roleId}</div>
+        <div>Role: {displayRole(staffDetails.roleId)}</div>
         <div>Job Title: {staffDetails.title}</div>
         <div>Annual Leave Entitlement: {staffDetails.anuLeave}</div>
         <div>Medical Leave Entitlement: {staffDetails.mediLeave}</div>
