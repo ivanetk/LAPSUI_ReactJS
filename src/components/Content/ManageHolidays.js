@@ -34,7 +34,7 @@ const ManageHolidays = (props) => {
 
   return (
     <div>
-      <h6>Manage Holidays</h6>
+      <b>Manage Holidays</b>
 
       <input type="number" />
       <button>Search</button>

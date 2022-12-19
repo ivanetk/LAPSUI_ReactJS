@@ -11,11 +11,15 @@ const StaffList = (props) => {
 
   const retrieveStaffList = () => {
     setLoading(true);
-    axios.get(`${props.api_url}/staff`).then((resp) => {
-      updateStaffList(resp.data);
-      setLoading(false);
-    });
-   
+    axios
+      .get(`${props.api_url}/staff`)
+      .then((resp) => {
+        if (resp.status === 200) {
+          updateStaffList(resp.data);
+          setLoading(false);
+        }
+      })
+      .catch((e) => console.log(e));
   };
 
   const capitalizeName = (name) => {

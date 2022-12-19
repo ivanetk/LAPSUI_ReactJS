@@ -57,6 +57,7 @@ const StaffDetails = (props) => {
         <div>Email: {staffDetails.email}</div>
         <div>Role: {displayRole(staffDetails.roleId)}</div>
         <div>Job Title: {staffDetails.title}</div>
+        <div>Manager ID: {staffDetails.managerId}</div>
         <div>Annual Leave Entitlement: {staffDetails.anuLeave}</div>
         <div>Medical Leave Entitlement: {staffDetails.mediLeave}</div>
         <div>Compensation Leave Entitlement: {staffDetails.compLeave}</div>

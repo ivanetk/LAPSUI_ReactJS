@@ -1,17 +1,18 @@
 import { useState } from "react";
 import axios from "axios";
 
-const StaffForm = (props) => {
+const AddStaffForm = (props) => {
   const [staff, setStaff] = useState({});
-  const [isLoading, setLoading] = useState(false);
 
   const submitHandler = (e) => {
     e.preventDefault();
-    setLoading(true);
-    axios.post(`${props.api_url}/staff`, staff).then(() => setLoading(false));
-    if (!isLoading) {
-      props.updateContentBody("Home");
-    }
+    axios.post(`${props.api_url}/staff`, staff).then( (resp) => {
+      if (resp.status === 201) {
+        props.updateContentBody("Home");
+      } else {
+        props.updateContentBody("Error");
+      }
+     } );
   };
 
   const inputHandler = (e) => {
@@ -73,11 +74,14 @@ const StaffForm = (props) => {
             <select
               id="roleId"
               name="roleId"
-              value={staff.roleId || ""}
+              defaultValue="0"
               onChange={inputHandler}
               required
               className="form-select"
             >
+              <option value="0" disabled hidden>
+                Select a Role
+              </option>
               <option value="1">Admin</option>
               <option value="2">Manager</option>
               <option value="3">Employee</option>
@@ -106,4 +110,4 @@ const StaffForm = (props) => {
   );
 };
 
-export default StaffForm;
+export default AddStaffForm;

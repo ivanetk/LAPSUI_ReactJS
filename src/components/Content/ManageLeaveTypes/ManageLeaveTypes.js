@@ -1,7 +1,7 @@
 import { useState } from "react";
 import LeaveTypesBody from "./LeaveTypesBody";
 
-const ManageLeaveTypes = () => {
+const ManageLeaveTypes = (props) => {
   const leaveTypes = ["Annual Leave", "Medical Leave", "Compensation Leave"];
   const [currentLeaveType, updateLeaveType] = useState("");
 
@@ -19,7 +19,10 @@ const ManageLeaveTypes = () => {
     <div>
       <div>{displayLeaveTypes}</div>
       <div>
-        <LeaveTypesBody currentLeaveType={currentLeaveType} />
+        <LeaveTypesBody
+          currentLeaveType={currentLeaveType}
+          api_url={props.api_url}
+        />
       </div>
     </div>
   );

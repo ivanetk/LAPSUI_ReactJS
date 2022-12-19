@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-const EditStaff = (props) => {
+const EditStaffForm = (props) => {
   const [staffDetails, updateStaffDetails] = useState({});
-  const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
     retrieveStaffDetails(props.staffId);
@@ -20,13 +19,15 @@ const EditStaff = (props) => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    setLoading(true);
     axios
       .put(`${props.api_url}/staff`, staffDetails)
-      .then(() => setLoading(false));
-    if (!isLoading) {
-      props.updateContentBody("View");
-    }
+      .then( (resp) => {
+        if (resp.status === 200) {
+          props.updateContentBody("View");
+        } else {
+          props.updateContentBody("Error");
+        }
+      });
   };
 
   const inputHandler = (e) => {
@@ -106,6 +107,19 @@ const EditStaff = (props) => {
           </label>
         </div>
         <div>
+          <label htmlFor="managerid">
+            Manager ID:
+            <input
+              type="text"
+              id="managerId"
+              name="managerId"
+              value={staffDetails.managerId || ""}
+              onChange={inputHandler}
+              required
+            />
+          </label>
+        </div>
+        <div>
           <label htmlFor="anuLeave">
             Annual Leave Entitlement:
             <input
@@ -166,4 +180,4 @@ const EditStaff = (props) => {
   );
 };
 
-export default EditStaff;
+export default EditStaffForm;

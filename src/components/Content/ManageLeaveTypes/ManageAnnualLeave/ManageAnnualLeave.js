@@ -1,62 +1,50 @@
+import AnnualLeaveList from "./AnnualLeaveList";
 import { useState } from "react";
-import StaffList from "./StaffList";
-import AddStaffForm from "./AddStaffForm";
-import StaffDetails from "./StaffDetails";
-import EditStaffForm from "./EditStaffForm";
+import AddAnLeaveForm from "./AddAnLeaveForm";
+import EditAnLeaveForm from "./EditAnLeaveForm";
 
-const ManageStaff = (props) => {
+const ManageAnnualLeave = (props) => {
   const [contentBody, updateContentBody] = useState("Home");
-  const [staffId, updateStaffId] = useState("");
-
-  const viewAndEditClickHandler = (id, e) => {
-    updateStaffId(id);
-    updateContentBody(e.target.innerHTML);
-  };
+  const [leaveDetails, setLeaveDetails] = useState({});
 
   const displayContentBody = (content) => {
     if (content === "Home") {
       return (
-        <StaffList
+        <AnnualLeaveList
           api_url={props.api_url}
           updateContentBody={updateContentBody}
-          viewAndEditClickHandler={viewAndEditClickHandler}
+          setLeaveDetails={setLeaveDetails}
         />
       );
     }
     if (content === "Add") {
       return (
-        <AddStaffForm
+        <AddAnLeaveForm
           api_url={props.api_url}
           updateContentBody={updateContentBody}
         />
       );
     }
     if (content === "View") {
-      return (
-        <StaffDetails
-          api_url={props.api_url}
-          staffId={staffId}
-          viewAndEditClickHandler={viewAndEditClickHandler}
-        />
-      );
+      return <div>View Annual Leave Scheme Details</div>;
     }
     if (content === "Edit") {
       return (
-        <EditStaffForm
+        <EditAnLeaveForm
           api_url={props.api_url}
-          staffId={staffId}
           updateContentBody={updateContentBody}
+          leaveDetails={leaveDetails}
         />
       );
     }
     if (content === "Error") {
-      return <div>Error, please try again</div>
+      return <div>Error, please try again</div>;
     }
   };
 
   return (
     <div>
-      <div><b>Manage Staff</b></div>
+      <b>Manage Annual Leave Scheme</b>
       <div>
         <button
           className="btn btn-secondary btn-sm"
@@ -76,4 +64,4 @@ const ManageStaff = (props) => {
   );
 };
 
-export default ManageStaff;
+export default ManageAnnualLeave;
