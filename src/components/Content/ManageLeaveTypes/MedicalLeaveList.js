@@ -11,7 +11,7 @@ const MedicalLeaveList = (props) => {
   }, []);
 
   const retrieveMedLeave = () => {
-    axios.get(`${props.api_url}/leave/medical`).then((resp) => {
+    axios.get(`${props.api_url}/leave/medical`, { withCredentials: true }).then((resp) => {
       updateMedLeave(resp.data);
       setMedLeaveForm(resp.data);
       console.log(resp.data);

@@ -7,15 +7,16 @@ const StaffDetails = (props) => {
 
   useEffect(() => {
     retrieveStaffDetails(props.staffId);
-  }, [props.staffId]);
+  }, []);
 
   const retrieveStaffDetails = (id) => {
     setLoading(true);
     axios
-      .get(`${props.api_url}/staff/${id}`)
+      .get(`${props.api_url}/staff/${id}`, { withCredentials: true })
       .then((resp) => {
         updateStaffDetails(resp.data);
         setLoading(false);
+        console.log(resp);
       })
       .catch((e) => console.log(e));
   };
@@ -24,18 +25,17 @@ const StaffDetails = (props) => {
     return name.charAt(0).toUpperCase() + name.slice(1);
   };
 
-  const displayRole = (roleid) => {
-    switch(roleid) {
-      case 1:
-        return "Admin";
-      case 2:
-        return "Manager";
-      case 3:
-        return "Employee";
-      default:
-        return "No role assigned";
+  const displayRole = (roleObj) => {
+    console.log(roleObj);
+    const roles = [];
+    roleObj.forEach((role) => {
+      roles.push(capitalizeName(role.name));
+    });
+    if (roles.length === 0) {
+      return "No role assigned";
     }
-  }
+    return roles.join(", ");
+  };
 
   const displayStatus = (status) => {
     if (status) {
@@ -49,20 +49,76 @@ const StaffDetails = (props) => {
   }
   if (staffDetails) {
     return (
-      <div>
-        <div>Staff ID: {staffDetails.stfId}</div>
-        <div>First Name: {capitalizeName(staffDetails.firstname)} </div>
-        <div>Last Name: {capitalizeName(staffDetails.lastname)}</div>
-        <div>Username: {staffDetails.username}</div>
-        <div>Email: {staffDetails.email}</div>
-        <div>Role: {displayRole(staffDetails.roleId)}</div>
-        <div>Job Title: {staffDetails.title}</div>
-        <div>Manager ID: {staffDetails.managerId}</div>
-        <div>Annual Leave Entitlement: {staffDetails.anuLeave}</div>
-        <div>Medical Leave Entitlement: {staffDetails.mediLeave}</div>
-        <div>Compensation Leave Entitlement: {staffDetails.compLeave}</div>
-        <div>Status: {displayStatus(staffDetails.status)}</div>
+      <div className="mt-4">
+        <table className="table table-sm">
+          <thead className="table-secondary">
+            <tr>
+              <th style={{width: '30%'}}>Staff Details</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Staff ID:</td>
+              <td> {staffDetails.stfId}</td>
+            </tr>
+            <tr>
+              <td>First Name:</td>
+              <td> {capitalizeName(staffDetails.firstname)} </td>
+            </tr>
+            <tr>
+              <td>Last Name:</td>
+              <td> {capitalizeName(staffDetails.lastname)}</td>
+            </tr>
+            <tr>
+              <td>Username:</td>
+              <td> {staffDetails.username}</td>
+            </tr>
+            <tr>
+              <td>Email:</td>
+              <td> {staffDetails.email}</td>
+            </tr>
+            <tr>
+              <td>Role:</td>
+              <td> {displayRole(staffDetails.roles)}</td>
+            </tr>
+            <tr>
+              <td>Job Title:</td>
+              <td> {staffDetails.title}</td>
+            </tr>
+            <tr>
+              <td>Manager ID:</td>
+              <td> {staffDetails.managerId}</td>
+            </tr>
+            <tr>
+              <td>Status:</td>
+              <td> {displayStatus(staffDetails.status)}</td>
+            </tr>
+          </tbody>
+          <thead className="table-secondary">
+            <tr>
+              <th>Leave Entitlements</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Annual Leave Entitlement:</td>
+              <td>{staffDetails.anuLeave}</td>
+            </tr>
+            <tr>
+              <td>Medical Leave Entitlement:</td>
+              <td>{staffDetails.mediLeave}</td>
+            </tr>
+            <tr>
+              <td>Compensation Leave Entitlement:</td>
+              <td>{staffDetails.compLeave}</td>
+            </tr>
+          </tbody>
+        </table>
+
         <button
+          className="btn btn-secondary btn-sm"
           onClick={(e) => {
             props.viewAndEditClickHandler(staffDetails.stfId, e);
           }}

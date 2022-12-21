@@ -2,13 +2,14 @@ import "./App.css";
 import Sidebar from "./components/Sidebar/Sidebar";
 import Content from "./components/Content/Content";
 import { useState } from "react";
-import axios from "axios";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Login from "./components/Login";
+import axios from "axios";
 
 function App() {
+  axios.defaults.withCredentials = true;
   const [menuItem, setMenuItem] = useState("");
-  const [token, setToken] = useState("");
+  const [isLogin, setLogin] = useState(false);
 
   const api_url = `http://localhost:8080/api`;
 
@@ -22,46 +23,36 @@ function App() {
     setMenuItem(menuItem);
   };
 
-  const login = () => {
-    axios
-      .get(`http://localhost:8080/api/login`, { withCredentials: true })
-      .then((resp) => {
-        console.log(resp);
-      });
-  };
-
-  const login2 = () => {
-    axios
-      .post(`http://localhost:8080/api/login`, {}, { withCredentials: true })
-      .then((resp) => {
-        console.log(resp);
-      });
-  };
-
-  login2();
-
   return (
     <div className="container">
-      <header>
+      <header className="mt-4">
         <div className="fs-4">Admin UI</div>
       </header>
       <BrowserRouter>
         <Routes>
-          <Route path="/login" element={<Login api_url={api_url} />}></Route>
+          <Route
+            path="/"
+            element={<Login api_url={api_url} setLogin={setLogin} />}
+          ></Route>
           <Route
             path="/dashboard"
             element={
-              <div className="row">
-                <div className="col navbar">
-                  <Sidebar
-                    sidebarHandler={sidebarHandler}
-                    items={sidebarItems}
-                  />
+              isLogin ? (
+                <div className="row ">
+                  <div className="col navbar pt-5">
+                    <Sidebar
+                      sidebarHandler={sidebarHandler}
+                      items={sidebarItems}
+                      setLogin={setLogin}
+                    />
+                  </div>
+                  <div className="col-10">
+                    <Content menuItem={menuItem} api_url={api_url} />
+                  </div>
                 </div>
-                <div className="col-10">
-                  <Content menuItem={menuItem} api_url={api_url} />
-                </div>
-              </div>
+              ) : (
+                <Navigate replace to={"/"} />
+              )
             }
           ></Route>
         </Routes>

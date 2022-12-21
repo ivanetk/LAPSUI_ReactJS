@@ -17,6 +17,7 @@ const ManageLeaveTypes = (props) => {
 
   return (
     <div>
+      <b>Manage Leave Types</b>
       <div>{displayLeaveTypes}</div>
       <div>
         <LeaveTypesBody

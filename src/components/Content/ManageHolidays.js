@@ -11,7 +11,7 @@ const ManageHolidays = (props) => {
 
   const retrieveHolidays = (year) => {
     axios
-      .get(`${props.api_url}/getholidays?year=${year}`)
+      .get(`${props.api_url}/getholidays/?year=${year}`)
       .then((resp) => updateHolidays(resp.data))
       .catch((e) => console.log(e));
   };
@@ -21,7 +21,6 @@ const ManageHolidays = (props) => {
     let month = date[1];
     let day = date[2];
     let dateObj = new Date(year, month - 1, day);
-    let format = day + "-" + month + "-" + year;
     return dateObj.toDateString();
   };
 
@@ -34,10 +33,24 @@ const ManageHolidays = (props) => {
 
   return (
     <div>
-      <b>Manage Holidays</b>
-
-      <input type="number" />
-      <button>Search</button>
+      <div>
+        <b className="me-2">Manage Holidays</b>
+      </div>
+      <div className="input-group mb-3">
+        <input
+          type="number"
+          value={year}
+          onChange={(e) => setYear(e.target.value)}
+        />
+        <button
+          onClick={(e) => {
+            retrieveHolidays(year);
+          }}
+          className="btn btn-outline-dark"
+        >
+          Retrieve
+        </button>
+      </div>
 
       <table className="table">
         <thead>

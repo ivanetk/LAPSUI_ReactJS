@@ -1,23 +1,39 @@
 import { useState } from "react";
 import axios from "axios";
+import { ErrorMessage } from "./ErrorMessage";
 
 const AddStaffForm = (props) => {
   const [staff, setStaff] = useState({});
+  const [errorMsg, setErrorMsg] = useState("");
 
   const submitHandler = (e) => {
     e.preventDefault();
-    axios.post(`${props.api_url}/staff`, staff).then( (resp) => {
-      if (resp.status === 201) {
-        props.updateContentBody("Home");
-      } else {
-        props.updateContentBody("Error");
-      }
-     } );
+    axios.defaults.withCredentials = true;
+    axios
+      .post(`${props.api_url}/staff`, staff, { withCredentials: true })
+      .then((resp) => {
+        if (resp.status === 201) {
+          props.updateContentBody("Home");
+        }
+      })
+      .catch((e) => {
+        console.log(e.response.data);
+        setErrorMsg(e.response.data.message);
+      });
   };
 
   const inputHandler = (e) => {
     const name = e.target.name;
     const value = e.target.value;
+    setStaff((details) => ({ ...details, [name]: value }));
+  };
+
+  const roleHandler = (e) => {
+    const name = e.target.name;
+    const value = [];
+    value.push({
+      id: e.target.value,
+    });
     setStaff((details) => ({ ...details, [name]: value }));
   };
 
@@ -69,22 +85,21 @@ const AddStaffForm = (props) => {
       </div>
       <div className="row">
         <div className="row col">
-          <label htmlFor="roleId">
+          <label htmlFor="roles">
             Role:
             <select
-              id="roleId"
-              name="roleId"
+              id="roles"
+              name="roles"
               defaultValue="0"
-              onChange={inputHandler}
+              onChange={roleHandler}
               required
               className="form-select"
             >
               <option value="0" disabled hidden>
                 Select a Role
               </option>
-              <option value="1">Admin</option>
-              <option value="2">Manager</option>
-              <option value="3">Employee</option>
+              <option value="1">Manager</option>
+              <option value="2">Employee</option>
             </select>
           </label>
         </div>
@@ -103,6 +118,7 @@ const AddStaffForm = (props) => {
           </label>
         </div>
       </div>
+      <ErrorMessage errorMsg={errorMsg} />
       <div>
         <input type="submit" className="btn btn-outline-dark" />
       </div>

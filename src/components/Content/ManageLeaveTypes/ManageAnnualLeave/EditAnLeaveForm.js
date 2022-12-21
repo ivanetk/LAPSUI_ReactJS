@@ -6,7 +6,7 @@ const EditAnLeaveForm = (props) => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    axios.put(`${props.api_url}/leave/annual`, anLeave).then((resp) => {
+    axios.put(`${props.api_url}/leave/annual`, anLeave, { withCredentials: true }).then((resp) => {
       if (resp.status === 200) {
         props.updateContentBody("Home");
       }

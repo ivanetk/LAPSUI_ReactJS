@@ -1,18 +1,18 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-const StaffList = (props) => {
+const InactiveStaffList = (props) => {
   const [staffList, updateStaffList] = useState([]);
   const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
-    retrieveStaffList();
+    retrieveInactiveStaffList();
   }, []);
 
-  const retrieveStaffList = () => {
+  const retrieveInactiveStaffList = () => {
     setLoading(true);
     axios
-      .get(`${props.api_url}/staff`, { withCredentials: true })
+      .get(`${props.api_url}/staff/inactive`, { withCredentials: true })
       .then((resp) => {
         if (resp.status === 200) {
           updateStaffList(resp.data);
@@ -71,4 +71,4 @@ const StaffList = (props) => {
   );
 };
 
-export default StaffList;
+export default InactiveStaffList;

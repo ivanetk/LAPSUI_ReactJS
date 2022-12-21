@@ -11,7 +11,7 @@ const CompensationLeaveList = (props) => {
   }, []);
 
   const retrieveCompLeave = () => {
-    axios.get(`${props.api_url}/leave/comp`).then((resp) => {
+    axios.get(`${props.api_url}/leave/comp`, { withCredentials: true }).then((resp) => {
       updateCompLeave(resp.data);
       setCompLeaveForm(resp.data);
       console.log(resp.data);

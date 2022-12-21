@@ -3,6 +3,7 @@ import StaffList from "./StaffList";
 import AddStaffForm from "./AddStaffForm";
 import StaffDetails from "./StaffDetails";
 import EditStaffForm from "./EditStaffForm";
+import InactiveStaffList from "./InactiveStaffList";
 
 const ManageStaff = (props) => {
   const [contentBody, updateContentBody] = useState("Home");
@@ -31,6 +32,15 @@ const ManageStaff = (props) => {
         />
       );
     }
+    if (content === "Inactive") {
+      return (
+        <InactiveStaffList
+          api_url={props.api_url}
+          updateContentBody={updateContentBody}
+          viewAndEditClickHandler={viewAndEditClickHandler}
+        />
+      );
+    }
     if (content === "View") {
       return (
         <StaffDetails
@@ -49,14 +59,17 @@ const ManageStaff = (props) => {
         />
       );
     }
+
     if (content === "Error") {
-      return <div>Error, please try again</div>
+      return <div>Error, please try again</div>;
     }
   };
 
   return (
     <div>
-      <div><b>Manage Staff</b></div>
+      <div>
+        <b>Manage Staff</b>
+      </div>
       <div>
         <button
           className="btn btn-secondary btn-sm"
@@ -69,6 +82,12 @@ const ManageStaff = (props) => {
           onClick={(e) => updateContentBody(e.target.innerHTML)}
         >
           Add
+        </button>
+        <button
+          className="btn btn-secondary btn-sm"
+          onClick={(e) => updateContentBody("Inactive")}
+        >
+          View Inactive Staff
         </button>
       </div>
       {displayContentBody(contentBody)}

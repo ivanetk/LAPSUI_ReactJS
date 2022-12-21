@@ -9,7 +9,7 @@ const AnnualLeaveList = (props) => {
   }, []);
 
   const retrieveLeaveList = () => {
-    axios.get(`${props.api_url}/leave/annual`).then((resp) => {
+    axios.get(`${props.api_url}/leave/annual`, { withCredentials: true }).then((resp) => {
       updateLeaveList(resp.data);
       console.log(resp.data);
     });

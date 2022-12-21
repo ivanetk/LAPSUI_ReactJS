@@ -6,11 +6,13 @@ const AddAnLeaveForm = (props) => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    axios.post(`${props.api_url}/leave/annual`, anLeave).then((resp) => {
-      if (resp.status === 201) {
-        props.updateContentBody("Home");
-      }
-    });
+    axios
+      .post(`${props.api_url}/leave/annual`, anLeave, { withCredentials: true })
+      .then((resp) => {
+        if (resp.status === 201) {
+          props.updateContentBody("Home");
+        }
+      });
   };
 
   const inputHandler = (e) => {
