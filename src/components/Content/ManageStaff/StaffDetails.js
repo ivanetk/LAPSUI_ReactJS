@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Password from "./Password";
 
 const StaffDetails = (props) => {
   const [staffDetails, updateStaffDetails] = useState(null);
   const [isLoading, setLoading] = useState(false);
+  const [password, setPassword] = useState("");
 
   useEffect(() => {
     retrieveStaffDetails(props.staffId);
@@ -20,6 +22,16 @@ const StaffDetails = (props) => {
       })
       .catch((e) => console.log(e));
   };
+
+  const retrieveStaffPassword = (id) => {
+    axios
+      .get(`${props.api_url}/password/${id}`, { withCredentials: true })
+      .then((resp) => {
+        setPassword(resp.data);
+      })
+      .catch((e) => console.log(e));
+  };
+  
 
   const capitalizeName = (name) => {
     return name.charAt(0).toUpperCase() + name.slice(1);
@@ -53,7 +65,7 @@ const StaffDetails = (props) => {
         <table className="table table-sm">
           <thead className="table-secondary">
             <tr>
-              <th style={{width: '30%'}}>Staff Details</th>
+              <th style={{ width: "30%" }}>Staff Details</th>
               <th></th>
             </tr>
           </thead>
@@ -88,7 +100,7 @@ const StaffDetails = (props) => {
             </tr>
             <tr>
               <td>Manager ID:</td>
-              <td> {staffDetails.managerId}</td>
+              <td> {staffDetails.managerId ? staffDetails.managerId : "No manager"}</td>
             </tr>
             <tr>
               <td>Status:</td>
@@ -118,13 +130,22 @@ const StaffDetails = (props) => {
         </table>
 
         <button
-          className="btn btn-secondary btn-sm"
+          className="btn btn-secondary btn-sm me-4"
           onClick={(e) => {
             props.viewAndEditClickHandler(staffDetails.stfId, e);
           }}
         >
           Edit
         </button>
+        <button
+          className="btn btn-warning btn-sm"
+          onClick={(e) => {
+            retrieveStaffPassword(staffDetails.stfId);
+          }}
+        >
+          Show Password
+        </button>
+        <Password password={password} />
       </div>
     );
   } else {

@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import AddMedLeave from "./AddMedLeave";
 
 const MedicalLeaveList = (props) => {
   const [medLeave, updateMedLeave] = useState({});
-  const [contentBody, setContentBody] = useState("");
+  const [contentBody, setContentBody] = useState("Home");
   const [medLeaveForm, setMedLeaveForm] = useState({});
 
   useEffect(() => {
@@ -28,7 +29,7 @@ const MedicalLeaveList = (props) => {
     e.preventDefault();
     axios.put(`${props.api_url}/leave/medical`, medLeaveForm).then((resp) => {
       if (resp.status === 200) {
-        setContentBody("");
+        setContentBody("Home");
         retrieveMedLeave();
       }
     });
@@ -63,9 +64,11 @@ const MedicalLeaveList = (props) => {
       );
     } else {
       return (
-        <tr>
-          <td>Medical Leave Scheme not found. Please add one.</td>
-        </tr>
+        <AddMedLeave
+          setContentBody={setContentBody}
+          api_url={props.api_url}
+          retrieveMedLeave={retrieveMedLeave}
+        />
       );
     }
   };

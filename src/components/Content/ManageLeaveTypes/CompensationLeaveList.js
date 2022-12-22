@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import AddCompLeave from "./AddCompLeave";
 
 const CompensationLeaveList = (props) => {
   const [compLeave, updateCompLeave] = useState({});
-  const [contentBody, setContentBody] = useState("");
+  const [contentBody, setContentBody] = useState("Home");
   const [compLeaveForm, setCompLeaveForm] = useState({});
 
   useEffect(() => {
@@ -11,11 +12,13 @@ const CompensationLeaveList = (props) => {
   }, []);
 
   const retrieveCompLeave = () => {
-    axios.get(`${props.api_url}/leave/comp`, { withCredentials: true }).then((resp) => {
-      updateCompLeave(resp.data);
-      setCompLeaveForm(resp.data);
-      console.log(resp.data);
-    });
+    axios
+      .get(`${props.api_url}/leave/comp`, { withCredentials: true })
+      .then((resp) => {
+        updateCompLeave(resp.data);
+        setCompLeaveForm(resp.data);
+        console.log(resp.data);
+      });
   };
 
   const inputHandler = (e) => {
@@ -28,7 +31,7 @@ const CompensationLeaveList = (props) => {
     e.preventDefault();
     axios.put(`${props.api_url}/leave/comp`, compLeaveForm).then((resp) => {
       if (resp.status === 200) {
-        setContentBody("");
+        setContentBody("Home");
         retrieveCompLeave();
       }
     });
@@ -40,9 +43,9 @@ const CompensationLeaveList = (props) => {
         <table className="table">
           <thead>
             <tr>
-              <th>Leave Entitlement</th>
+              <th>Compensation Leave Entitlement</th>
               <th>Granularity</th>
-              <th>Overtime Ratio</th>
+              <th>Overtime Ratio &#40;number of hours : 0.5 leave days&#41;</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -65,9 +68,11 @@ const CompensationLeaveList = (props) => {
       );
     } else {
       return (
-        <tr>
-          <td>Compensation Leave Scheme not found. Please add one.</td>
-        </tr>
+        <AddCompLeave
+          setContentBody={setContentBody}
+          api_url={props.api_url}
+          retrieveCompLeave={retrieveCompLeave}
+        />
       );
     }
   };
@@ -83,7 +88,7 @@ const CompensationLeaveList = (props) => {
                 type="number"
                 id="leaveDays"
                 name="leaveDays"
-                value={compLeaveForm.leaveDays || ""}
+                value={compLeaveForm.leaveDays ?? "0"}
                 onChange={inputHandler}
                 required
               />
@@ -104,7 +109,7 @@ const CompensationLeaveList = (props) => {
           </div>
           <div>
             <label htmlFor="overtimeRatio">
-              Overtime Ratio:
+              Overtime Ratio &#40;number of hours : 0.5 leave days&#41;:
               <input
                 type="number"
                 id="overtimeRatio"
