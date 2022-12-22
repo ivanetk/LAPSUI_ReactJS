@@ -1,8 +1,10 @@
 import { useState } from "react";
 import axios from "axios";
+import { ErrorMessage } from "../../ManageStaff/ErrorMessage";
 
 const AddAnLeaveForm = (props) => {
   const [anLeave, setAnLeave] = useState({});
+  const [errorMsg, setErrorMsg] = useState("");
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -12,6 +14,10 @@ const AddAnLeaveForm = (props) => {
         if (resp.status === 201) {
           props.updateContentBody("Home");
         }
+      })
+      .catch((e) => {
+        console.log(e.response.data);
+        setErrorMsg(e.response.data.message);
       });
   };
 
@@ -67,6 +73,7 @@ const AddAnLeaveForm = (props) => {
           />
         </label>
       </div>
+      <ErrorMessage errorMsg={errorMsg} />
       <div>
         <input type="submit" className="btn btn-outline-dark" />
       </div>
