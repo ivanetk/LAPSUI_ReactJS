@@ -143,7 +143,7 @@ const StaffDetails = (props) => {
             retrieveStaffPassword(staffDetails.stfId);
           }}
         >
-          Show Password
+          Reset Password
         </button>
         <Password password={password} />
       </div>
